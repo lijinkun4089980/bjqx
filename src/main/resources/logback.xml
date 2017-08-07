@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework.aop" level="debug"/>
+    <logger name="org.springframework.core" level="debug"/>
+    <logger name="org.springframework.beans" level="debug"/>
+    <logger name="org.springframework.context" level="debug"/>
+    <logger name="org.springframework.web" level="debug"/>
+    <logger name="org.springframework.orm" level="debug"/>
+    <logger name="org.springframework.transaction" level="debug"/>
+
+    <logger name="org.mybatis.spring" level="debug"/>
+    <logger name="org.hibernate" level="debug"/>
+    <logger name="net.sf.ehcache" level="debug"/>
+    <logger name="org.apache.shiro" level="debug"/>
+
+    <logger name="org.hibernate.SQL" level="debug"/>
+    <logger name="org.hibernate.type" level="debug"/>
+    <root level="debug">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>  

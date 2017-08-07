@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bjqx.baseData.dao.UserMapper">
+
+    <resultMap type="com.bjqx.baseData.entity.User" id="UserMap">
+        <id column="c_id" jdbcType="INTEGER" property="id"/>
+        <result column="c_login_name" jdbcType="VARCHAR" property="loginName"/>
+        <result column="c_password" jdbcType="VARCHAR" property="password"/>
+        <result column="c_user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="c_sex" jdbcType="INTEGER" property="sex"/>
+        <result column="c_phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="c_mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="c_email" jdbcType="VARCHAR" property="email"/>
+        <result column="c_address" jdbcType="VARCHAR" property="address"/>
+        <result column="c_is_delete" jdbcType="INTEGER" property="isDelete"/>
+        <result column="c_creater" jdbcType="VARCHAR" property="creater"/>
+        <result column="c_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="c_creater_id" jdbcType="INTEGER" property="createrId"/>
+        <result column="c_updater" jdbcType="VARCHAR" property="updater"/>
+        <result column="c_update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="c_updater_id" jdbcType="INTEGER" property="updaterId"/>
+    </resultMap>
+
+    <select id="findList" parameterType="hashmap" resultMap="UserMap">
+        select t.*
+        <include refid="findSql"/>
+    </select>
+
+    <select id="findOne" parameterType="hashmap" resultMap="UserMap">
+        select t.*
+        <include refid="findSql"/>
+    </select>
+
+    <sql id="findSql">
+        from t_user t
+        <where>
+            <if test="id != null ">and t.c_id = #{id, jdbcType=INTEGER}</if>
+        </where>
+    </sql>
+
+    <select id="findById" parameterType="Integer" resultMap="UserMap">
+		select t.* from t_user t where t.c_id = #{id, jdbcType=INTEGER}
+	</select>
+
+    <insert id="addOne" parameterType="com.bjqx.baseData.entity.User" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="int" order="BEFORE">
+            select common_sequence.nextval from dual
+        </selectKey>
+
+        insert into t_user
+        (
+        C_ID,
+        c_login_name,
+        c_password,
+        c_user_name,
+        c_sex,
+        c_phone,
+        c_mobile,
+        c_email,
+        c_address,
+        c_is_delete,
+        c_creater,
+        c_create_time,
+        c_creater_id,
+        c_updater,
+        c_update_time,
+        c_updater_id
+        )
+        values
+        (
+        #{id, jdbcType=INTEGER},
+        #{loginName, jdbcType=VARCHAR} ,
+        #{password, jdbcType=VARCHAR} ,
+        #{userName, jdbcType=VARCHAR} ,
+        #{sex, jdbcType=INTEGER} ,
+        #{phone, jdbcType=VARCHAR} ,
+        #{mobile, jdbcType=VARCHAR} ,
+        #{email, jdbcType=VARCHAR} ,
+        #{address, jdbcType=VARCHAR} ,
+        #{isDelete, jdbcType=INTEGER} ,
+        #{creater, jdbcType=VARCHAR} ,
+        #{createTime, jdbcType=TIMESTAMP} ,
+        #{createrId, jdbcType=INTEGER} ,
+        #{updater, jdbcType=VARCHAR} ,
+        #{updateTime, jdbcType=TIMESTAMP} ,
+        #{updaterId, jdbcType=INTEGER}
+        )
+    </insert>
+
+    <update id="updateOne" parameterType="com.bjqx.baseData.entity.User">
+        update t_user set 
+        	C_ID = #{id, jdbcType=INTEGER},
+        	c_login_name = #{loginName, jdbcType=VARCHAR},
+        	c_password = #{password, jdbcType=VARCHAR},
+        	c_user_name = #{userName, jdbcType=VARCHAR},
+        	c_sex = #{sex, jdbcType=INTEGER},
+        	c_phone = #{phone, jdbcType=VARCHAR},
+        	c_mobile = #{mobile, jdbcType=VARCHAR},
+        	c_email = #{email, jdbcType=VARCHAR},
+        	c_address = #{address, jdbcType=VARCHAR},
+        	c_is_delete = #{isDelete, jdbcType=INTEGER},
+        	c_creater = #{creater, jdbcType=VARCHAR},
+        	c_create_time = #{createTime, jdbcType=TIMESTAMP},
+        	c_creater_id = #{createrId, jdbcType=INTEGER},
+        	c_updater = #{updater, jdbcType=VARCHAR},
+        	c_update_time = #{updateTime, jdbcType=TIMESTAMP},
+        	c_updater_id = #{updaterId, jdbcType=INTEGER}
+        where c_id =  #{id, jdbcType=INTEGER}
+    </update>
+
+    <delete id="delById" parameterType="Integer">
+        delete from t_user where c_id = #{id, jdbcType=INTEGER}
+	</delete>
+
+</mapper>

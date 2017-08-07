@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bjqx.baseData.dao.PermissionMapper">
+
+    <resultMap type="com.bjqx.baseData.entity.Permission" id="PermissionMap">
+        <id column="c_id" jdbcType="INTEGER" property="id"/>
+        <result column="c_permission_name" jdbcType="VARCHAR" property="permissionName"/>
+        <result column="c_uri" jdbcType="VARCHAR" property="uri"/>
+        <result column="c_p_id" jdbcType="INTEGER" property="pId"/>
+        <result column="c_remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <select id="findByUri" parameterType="hashmap" resultMap="PermissionMap">
+        SELECT t.*
+        <include refid="findSql"/>
+    </select>
+
+    <select id="findList" parameterType="hashmap" resultMap="PermissionMap">
+        select t.*
+        <include refid="findSql"/>
+    </select>
+
+    <select id="findOne" parameterType="hashmap" resultMap="PermissionMap">
+        select t.*
+        <include refid="findSql"/>
+    </select>
+
+    <sql id="findSql">
+        from t_permission t
+        <where>
+            <if test="id != null ">and t.c_id = #{id, jdbcType=INTEGER}</if>
+            <if test="requestUrl != null ">and t.c_uri = #{requestUrl, jdbcType=VARCHAR}</if>
+        </where>
+    </sql>
+
+    <select id="findById" parameterType="Integer" resultMap="PermissionMap">
+		select t.* from t_permission t where t.c_id = #{id, jdbcType=INTEGER}
+	</select>
+
+    <insert id="addOne" parameterType="com.bjqx.baseData.entity.Permission" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="int" order="BEFORE">
+            select common_sequence.nextval from dual
+        </selectKey>
+
+        insert into t_permission
+        (
+        C_ID,
+        c_permission_name,
+        c_uri,
+        c_p_id,
+        c_remark
+        )
+        values
+        (
+        #{id, jdbcType=INTEGER},
+        #{permissionName, jdbcType=VARCHAR} ,
+        #{uri, jdbcType=VARCHAR} ,
+        #{pId, jdbcType=INTEGER} ,
+        #{remark, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateOne" parameterType="com.bjqx.baseData.entity.Permission">
+        update t_permission set 
+        	C_ID = #{id, jdbcType=INTEGER},
+        	c_permission_name = #{permissionName, jdbcType=VARCHAR},
+        	c_uri = #{uri, jdbcType=VARCHAR},
+        	c_p_id = #{pId, jdbcType=INTEGER},
+        	c_remark = #{remark, jdbcType=VARCHAR}
+        where c_id =  #{id, jdbcType=INTEGER}
+    </update>
+
+    <delete id="delById" parameterType="Integer">
+        delete from t_permission where c_id = #{id, jdbcType=INTEGER}
+	</delete>
+
+</mapper>

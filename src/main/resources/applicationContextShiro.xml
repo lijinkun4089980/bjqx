@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+    <!--<bean id="baseRealm" class="com.bjqx.base.common.BaseRealm">-->
+    <!--<property name="defaultRoles" value="*" />-->
+    <!--<property name="casServerUrlPrefix" value="${cas.server.ip.address}" />-->
+    <!--<property name="casService" value="${local.server.ip.address}/login" />-->
+    <!--</bean>-->
+
+    <bean id="baseRealm" class="com.bjqx.base.common.BaseRealm"></bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="baseRealm"/>
+        <!--<property name="subjectFactory" ref="casSubjectFactory"/>-->
+    </bean>
+
+    <bean id="casSubjectFactory" class="org.apache.shiro.cas.CasSubjectFactory"/>
+
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <!--<property name="loginUrl" value="${cas.server.ip.address}/login?service=${local.server.ip.address}/login"></property>-->
+        <!--<property name="filters">-->
+        <!--<map>-->
+        <!--<entry key="casFilter" value-ref="casFilter"/>-->
+        <!--</map>-->
+        <!--</property>-->
+        <!--<property name="filterChainDefinitions">-->
+        <!--<value>-->
+        <!--/login = casFilter-->
+        <!--/static/**= anon-->
+        <!--/rest/**= anon-->
+        <!--/** = user-->
+        <!--</value>-->
+        <!--</property>-->
+    </bean>
+
+    <!--<bean id="casFilter" class="org.apache.shiro.cas.CasFilter">-->
+    <!--<property name="failureUrl" value="${cas.server.ip.address}/login?service=${local.server.ip.address}/login"/>-->
+    <!--</bean>-->
+</beans>

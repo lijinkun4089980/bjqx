@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bjqx.baseData.dao.RolePermissionMapper">
+
+    <resultMap type="com.bjqx.baseData.entity.RolePermission" id="RolePermissionMap">
+        <id column="c_id" jdbcType="INTEGER" property="id"/>
+        <result column="c_id_role" jdbcType="INTEGER" property="idRole"/>
+        <result column="c_id_permission" jdbcType="INTEGER" property="idPermission"/>
+    </resultMap>
+
+    <select id="findList" parameterType="hashmap" resultMap="RolePermissionMap">
+        select t.*
+        <include refid="findSql"/>
+    </select>
+
+    <select id="findOne" parameterType="hashmap" resultMap="RolePermissionMap">
+        select t.*
+        <include refid="findSql"/>
+    </select>
+
+    <sql id="findSql">
+        from t_role_permission t
+        <where>
+            <if test="id != null ">and t.c_id = #{id, jdbcType=INTEGER}</if>
+        </where>
+    </sql>
+
+    <select id="findById" parameterType="Integer" resultMap="RolePermissionMap">
+		select t.* from t_role_permission t where t.c_id = #{id, jdbcType=INTEGER}
+	</select>
+
+    <insert id="addOne" parameterType="com.bjqx.baseData.entity.RolePermission" useGeneratedKeys="true"
+            keyProperty="id">
+        <selectKey keyProperty="id" resultType="int" order="BEFORE">
+            select common_sequence.nextval from dual
+        </selectKey>
+
+        insert into t_role_permission
+        (
+        C_ID,
+        c_id_role,
+        c_id_permission
+        )
+        values
+        (
+        #{id, jdbcType=INTEGER},
+        #{idRole, jdbcType=INTEGER} ,
+        #{idPermission, jdbcType=INTEGER}
+        )
+    </insert>
+
+    <update id="updateOne" parameterType="com.bjqx.baseData.entity.RolePermission">
+        update t_role_permission set 
+        	C_ID = #{id, jdbcType=INTEGER},
+        	c_id_role = #{idRole, jdbcType=INTEGER},
+        	c_id_permission = #{idPermission, jdbcType=INTEGER}
+        where c_id =  #{id, jdbcType=INTEGER}
+    </update>
+
+    <delete id="delById" parameterType="Integer">
+        delete from t_role_permission where c_id = #{id, jdbcType=INTEGER}
+	</delete>
+
+</mapper>

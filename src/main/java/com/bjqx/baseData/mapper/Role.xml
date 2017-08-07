@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bjqx.baseData.dao.RoleMapper">
+
+    <resultMap type="com.bjqx.baseData.entity.Role" id="RoleMap">
+        <id column="c_id" jdbcType="INTEGER" property="id"/>
+        <result column="c_role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="c_status" jdbcType="INTEGER" property="status"/>
+        <result column="c_remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <select id="findList" parameterType="hashmap" resultMap="RoleMap">
+        select t.*
+        <include refid="findSql"/>
+    </select>
+
+    <select id="findOne" parameterType="hashmap" resultMap="RoleMap">
+        select t.*
+        <include refid="findSql"/>
+    </select>
+
+    <sql id="findSql">
+        from t_role t
+        <where>
+            <if test="id != null ">and t.c_id = #{id, jdbcType=INTEGER}</if>
+        </where>
+    </sql>
+
+    <select id="findById" parameterType="Integer" resultMap="RoleMap">
+		select t.* from t_role t where t.c_id = #{id, jdbcType=INTEGER}
+	</select>
+
+    <insert id="addOne" parameterType="com.bjqx.baseData.entity.Role" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="int" order="BEFORE">
+            select common_sequence.nextval from dual
+        </selectKey>
+
+        insert into t_role
+        (
+        C_ID,
+        c_role_name,
+        c_status,
+        c_remark
+        )
+        values
+        (
+        #{id, jdbcType=INTEGER},
+        #{roleName, jdbcType=VARCHAR} ,
+        #{status, jdbcType=INTEGER} ,
+        #{remark, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateOne" parameterType="com.bjqx.baseData.entity.Role">
+        update t_role set 
+        	C_ID = #{id, jdbcType=INTEGER},
+        	c_role_name = #{roleName, jdbcType=VARCHAR},
+        	c_status = #{status, jdbcType=INTEGER},
+        	c_remark = #{remark, jdbcType=VARCHAR}
+        where c_id =  #{id, jdbcType=INTEGER}
+    </update>
+
+    <delete id="delById" parameterType="Integer">
+        delete from t_role where c_id = #{id, jdbcType=INTEGER}
+	</delete>
+
+</mapper>

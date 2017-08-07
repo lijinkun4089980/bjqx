@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bjqx.baseData.dao.RoleUserMapper">
+
+    <resultMap type="com.bjqx.baseData.entity.RoleUser" id="RoleUserMap">
+        <id column="c_id" jdbcType="INTEGER" property="id"/>
+        <result column="c_role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="c_user_id" jdbcType="INTEGER" property="userId"/>
+    </resultMap>
+
+    <select id="findList" parameterType="hashmap" resultMap="RoleUserMap">
+        select t.*
+        <include refid="findSql"/>
+    </select>
+
+    <select id="findOne" parameterType="hashmap" resultMap="RoleUserMap">
+        select t.*
+        <include refid="findSql"/>
+    </select>
+
+    <sql id="findSql">
+        from t_role_user t
+        <where>
+            <if test="id != null ">and t.c_id = #{id, jdbcType=INTEGER}</if>
+        </where>
+    </sql>
+
+    <select id="findById" parameterType="Integer" resultMap="RoleUserMap">
+		select t.* from t_role_user t where t.c_id = #{id, jdbcType=INTEGER}
+	</select>
+
+    <insert id="addOne" parameterType="com.bjqx.baseData.entity.RoleUser" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="int" order="BEFORE">
+            select common_sequence.nextval from dual
+        </selectKey>
+
+        insert into t_role_user
+        (
+        C_ID,
+        c_role_id,
+        c_user_id
+        )
+        values
+        (
+        #{id, jdbcType=INTEGER},
+        #{roleId, jdbcType=INTEGER} ,
+        #{userId, jdbcType=INTEGER}
+        )
+    </insert>
+
+    <update id="updateOne" parameterType="com.bjqx.baseData.entity.RoleUser">
+        update t_role_user set 
+        	C_ID = #{id, jdbcType=INTEGER},
+        	c_role_id = #{roleId, jdbcType=INTEGER},
+        	c_user_id = #{userId, jdbcType=INTEGER}
+        where c_id =  #{id, jdbcType=INTEGER}
+    </update>
+
+    <delete id="delById" parameterType="Integer">
+        delete from t_role_user where c_id = #{id, jdbcType=INTEGER}
+	</delete>
+
+</mapper>
